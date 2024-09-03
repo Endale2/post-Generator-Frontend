@@ -1,0 +1,184 @@
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux'; // Import useSelector for accessing Redux state
+import axios from '../axiosConfig';
+import { useNavigate } from 'react-router-dom';
+import { FaTrash, FaSpinner, FaRedo } from 'react-icons/fa';
+
+const AdminPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [scanStatus, setScanStatus] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [reloadLoading, setReloadLoading] = useState(false);
+  const [unauthenticated, setUnauthenticated] = useState(false);
+  const navigate = useNavigate();
+  const { role } = useSelector((state) => state.user); // Get role from Redux store
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (role === 'admin') {
+          fetchDailyScanStatus();
+          fetchUsers();
+        } else {
+          navigate('/home');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setUnauthenticated(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      setLoading(false);
+      setUsers([]);
+      setScanStatus(null);
+    };
+  }, [role, navigate]);
+
+  const fetchDailyScanStatus = async () => {
+    try {
+      const response = await axios.get('/rss/check-daily-scan');
+      setScanStatus(response.data);
+    } catch (error) {
+      console.error('Error fetching scan status:', error);
+    }
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('/admin/users');
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const handleReloadNews = async () => {
+    setReloadLoading(true);
+    try {
+      await axios.post('/rss/reload');
+      setScanStatus({ message: 'News for today already reloaded.', scan: null });
+    } catch (error) {
+      console.error('Error reloading news:', error);
+    } finally {
+      setReloadLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (userId) => {
+    try {
+      await axios.delete(`/admin/user/${userId}`);
+      setUsers(users.filter(user => user._id !== userId));
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+
+  const handleLoginRedirect = () => {
+    navigate('/login');
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+        <FaSpinner className="animate-spin text-3xl text-gray-700 dark:text-gray-300" />
+        <span className="ml-4 text-gray-700 dark:text-gray-300">Loading...</span>
+      </div>
+    );
+  }
+
+  if (unauthenticated) {
+    return (
+      <div className="flex flex-col min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900 p-6">
+        <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100 text-center">
+          You are not logged in
+        </h1>
+        <p className="mb-4 text-gray-700 dark:text-gray-300 text-center">
+          Please log in to access the admin page.
+        </p>
+        <button
+          onClick={handleLoginRedirect}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+        >
+          Go to Login Page
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <main className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100 text-center">
+            Admin Dashboard
+          </h2>
+
+          {scanStatus?.message === 'No scan today. Reload news.' ? (
+            <div className="mb-6 text-center">
+              <button
+                onClick={handleReloadNews}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors flex items-center justify-center mx-auto"
+                disabled={reloadLoading}
+              >
+                {reloadLoading ? (
+                  <FaSpinner className="animate-spin mr-2" />
+                ) : (
+                  <>
+                    <FaRedo className="mr-2" />
+                    Reload Today&apos;s News
+                  </>
+                )}
+              </button>
+            </div>
+          ) : scanStatus?.message === 'News for today already reloaded.' ? (
+            <div className="mb-6 text-center">
+              <div className="p-4 bg-green-100 text-green-700 rounded mb-2">
+                News for today already reloaded
+              </div>
+            </div>
+          ) : null}
+
+          <div className="mt-10">
+            <h3 className="text-2xl font-semibold mb-4">Users</h3>
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
+                <thead>
+                  <tr className="bg-gray-100 dark:bg-gray-700 border-b dark:border-gray-600">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map(user => (
+                    <tr key={user._id} className="border-b dark:border-gray-600">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{user.name}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{user.email}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{user.role}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                        <button
+                          onClick={() => handleDeleteUser(user._id)}
+                          className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-600 transition-colors"
+                        >
+                          <FaTrash />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default AdminPage;
