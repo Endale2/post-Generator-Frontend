@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from '../axiosConfig';
 import { FaSpinner } from 'react-icons/fa';
 
@@ -37,8 +37,9 @@ const RegisterPage = () => {
         {error && <p className="text-red-600 text-center mb-4">{error}</p>}
         
         <div className="mb-6">
-          <label className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
+          <label htmlFor="name" className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
           <input
+            id="name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -49,8 +50,9 @@ const RegisterPage = () => {
         </div>
         
         <div className="mb-6">
-          <label className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+          <label htmlFor="email" className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
           <input
+            id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -61,8 +63,9 @@ const RegisterPage = () => {
         </div>
         
         <div className="mb-6">
-          <label className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
+          <label htmlFor="password" className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>
           <input
+            id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -81,7 +84,7 @@ const RegisterPage = () => {
         </button>
         
         <p className="mt-6 text-center text-gray-700 dark:text-gray-300 text-sm">
-          Already have an account? <a href="/login" className="text-purple-600 hover:underline">Login</a>
+          Already have an account? <Link to="/login" className="text-purple-600 hover:underline">Login</Link>
         </p>
       </form>
     </div>
