@@ -17,7 +17,13 @@ const LoginPage = () => {
     setLoading(true);
     try {
       // Send login request
-      await axios.post('/auth/login', { email, password });
+      const response = await axios.post('/auth/login', { email, password });
+
+      // Assuming the token is sent in the response body
+      const { token } = response.data;
+
+      // Store token in local storage
+      localStorage.setItem('accessToken', token);
 
       // Redirect to /home after successful login
       navigate('/home');

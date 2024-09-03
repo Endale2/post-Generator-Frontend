@@ -14,9 +14,17 @@ const LogoutButton = () => {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await axios.post('/auth/logout', {}, { withCredentials: true });
-      dispatch(logout()); // Clear user data from Redux store
-      navigate('/login'); // Redirect to login page after logout
+      
+      // Remove token from local storage
+      localStorage.removeItem('accessToken');
+
+      // Clear user data from Redux store
+      dispatch(logout());
+
+      // Redirect to login page after logout
+      navigate('/login');
+
+      // Notify user of successful logout
       toast.success('Successfully logged out');
     } catch (error) {
       toast.error('Logout failed. Please try again.');

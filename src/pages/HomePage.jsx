@@ -1,6 +1,4 @@
-// src/pages/HomePage.jsx
 import React, { useEffect, useState } from 'react';
-import axios from '../axiosConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../features/userSlice';
 
@@ -12,6 +10,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        // Dispatch fetchUser action
         await dispatch(fetchUser()).unwrap();
       } catch (error) {
         console.error('Failed to fetch user:', error);
@@ -25,6 +24,10 @@ const HomePage = () => {
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
+  }
+
+  if (user.status === 'failed') {
+    return <div className="text-center text-red-600">Failed to load user data. {user.error}</div>;
   }
 
   return (
