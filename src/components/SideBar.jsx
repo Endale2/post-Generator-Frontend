@@ -16,7 +16,6 @@ const SideBar = () => {
         setRole(response.data.role);
       } catch (error) {
         console.error('Error fetching user role:', error);
-        // Handle error appropriately
       } finally {
         setLoading(false);
       }
@@ -41,7 +40,6 @@ const SideBar = () => {
     return (
       <div className="fixed inset-y-0 left-0 z-20 bg-gray-100 dark:bg-gray-900 p-6 w-64 lg:w-72 shadow-lg mt-16">
         <div className="flex flex-col mt-6 space-y-4">
-          {/* Loading indicator */}
           <div className="text-center">Loading...</div>
         </div>
       </div>
@@ -50,7 +48,7 @@ const SideBar = () => {
 
   return (
     <div>
-      {/* Hamburger Menu Button */}
+      {/* Hamburger Menu Button for smaller screens */}
       <button
         onClick={toggleSidebar}
         className="lg:hidden fixed top-4 left-4 z-30 p-2 rounded-md bg-gray-100 dark:bg-gray-900"
@@ -58,7 +56,7 @@ const SideBar = () => {
         {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
       </button>
 
-      {/* Sidebar */}
+      {/* Sidebar for larger screens and menu for smaller screens */}
       <div
         className={`fixed inset-y-0 left-0 z-20 bg-gray-100 dark:bg-gray-900 p-6 w-64 lg:w-72 shadow-lg mt-16 transition-transform transform ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
@@ -87,7 +85,7 @@ const SideBar = () => {
         </div>
       </div>
 
-      {/* Overlay for smaller screens */}
+      {/* Overlay for smaller screens to close the menu */}
       {isOpen && (
         <div
           onClick={toggleSidebar}
