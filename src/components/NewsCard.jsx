@@ -42,13 +42,10 @@ const NewsCard = ({ title, description, link }) => {
 
   // Handle Copy button click
   const handleCopy = () => {
+    console.log('Copy button clicked'); // Add this line to debug
     navigator.clipboard.writeText(formattedDescription)
       .then(() => {
-        toast.success('Content copied to clipboard!', {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 3000,
-          theme: 'dark',
-        });
+        toast.success('Content copied to clipboard!');
         setCopyText('Copied');
         setTimeout(() => {
           setCopyText('Copy');
@@ -58,6 +55,7 @@ const NewsCard = ({ title, description, link }) => {
         console.error('Failed to copy text: ', error);
       });
   };
+  
 
   const readMoreLink = formattedDescription.match(/Read more: (https?:\/\/[^\s]+)/);
   const readMoreUrl = readMoreLink ? readMoreLink[1] : link;
