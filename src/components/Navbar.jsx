@@ -32,7 +32,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 right-0 z-30 bg-gray-200 dark:bg-gray-900 shadow-md">
       <div className="flex items-center justify-between p-4 max-w-screen-xl mx-auto">
-        <h1 className="text-xl font-bold text-gray-800 dark:text-white">News Portal</h1>
+        <h1 className="text-xl font-bold text-gray-800 dark:text-white">Posts Portal</h1>
         <div className="flex items-center">
           <Avatar name={displayName} />
           <span className="text-gray-800 dark:text-white mr-4 ml-2">

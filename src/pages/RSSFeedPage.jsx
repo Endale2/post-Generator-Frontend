@@ -18,7 +18,7 @@ const RSSFeedPage = () => {
         await axios.get('/auth/user');
         
         // Fetch RSS feeds
-        fetchRSSFeeds();
+        await fetchRSSFeeds();
       } catch (error) {
         console.error('Error verifying token or fetching RSS feeds:', error);
         toast.error('Error verifying token or fetching RSS feeds.');
@@ -34,6 +34,7 @@ const RSSFeedPage = () => {
           setRssFeeds(response.data);
         } else {
           console.error('Unexpected response format:', response.data);
+          toast.error('Unexpected response format.');
         }
       } catch (error) {
         console.error('Error fetching RSS feeds:', error);
@@ -97,7 +98,7 @@ const RSSFeedPage = () => {
         </div>
       ) : (
         <ul className="space-y-4 max-w-3xl mx-auto">
-          {Array.isArray(rssFeeds) && rssFeeds.length > 0 ? (
+          {rssFeeds.length > 0 ? (
             rssFeeds.map(feed => (
               <li key={feed._id} className="flex items-center justify-between bg-white p-4 rounded-lg shadow-md dark:bg-gray-800">
                 <div className="flex items-center">
