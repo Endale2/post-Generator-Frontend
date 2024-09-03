@@ -1,33 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../features/userSlice';
+import axios from '../axiosConfig'; // Import the Axios instance
 
 const HomePage = () => {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null); // Local state for user data
+  const [loading, setLoading] = useState(true); // Local state for loading
+  const [error, setError] = useState(null); // Local state for error
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Dispatch fetchUser action
-        await dispatch(fetchUser()).unwrap();
+        const response = await axios.get('/auth/user'); // Fetch user data
+        setUser(response.data); // Set user data
       } catch (error) {
-        console.error('Failed to fetch user:', error);
+        setError(error.response?.data?.message || 'Failed to load user data.'); // Set error message
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop loading
       }
     };
 
     fetchUserData();
-  }, [dispatch]);
+  }, []);
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
   }
 
-  if (user.status === 'failed') {
-    return <div className="text-center text-red-600">Failed to load user data. {user.error}</div>;
+  if (error) {
+    return <div className="text-center text-red-600">Failed to load user data. {error}</div>;
+  }
+
+  if (!user) {
+    return <div className="text-center">No user data available.</div>;
   }
 
   return (
