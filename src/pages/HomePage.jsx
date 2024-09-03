@@ -62,7 +62,7 @@ const HomePage = () => {
     <main className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">
       <div className="max-w-2xl mx-auto">
         <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">
-          Today's Top 3 News
+          Today's Top 3 Posts
         </h2>
 
         {loading ? (
@@ -83,11 +83,11 @@ const HomePage = () => {
         ) : (
           <div className="text-center">
             <p className="text-lg text-gray-700 dark:text-gray-300">
-              No news for today.
+              No posts for today.
               {isAdmin && (
                 <>
                   <span className="block mt-4 text-gray-700 dark:text-gray-300">
-                    Please reload news in the admin section.
+                    Please reload posts in the admin section.
                   </span>
                   <button
                     onClick={handleReloadNews}
