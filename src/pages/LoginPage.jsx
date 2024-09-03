@@ -19,8 +19,8 @@ const LoginPage = () => {
       // Send login request
       const response = await axios.post('/auth/login', { email, password });
 
-      // Assuming the token is sent in the response body
-      const { token } = response.data.accessToken;
+      // Correctly extract the token from the response
+      const token = response.data.accessToken;
 
       // Store token in local storage
       localStorage.setItem('accessToken', token);
