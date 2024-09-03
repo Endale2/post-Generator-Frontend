@@ -59,9 +59,9 @@ const HomePage = () => {
   };
 
   return (
-    <main className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">
+    <main className="flex-1 p-4 sm:p-6 bg-gray-100 dark:bg-gray-900 min-h-screen">
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100 text-center">
           Today's Top 3 Posts
         </h2>
 
