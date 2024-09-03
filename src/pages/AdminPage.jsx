@@ -8,25 +8,25 @@ const AdminPage = () => {
   const [scanStatus, setScanStatus] = useState(null);
   const [users, setUsers] = useState([]);
   const [reloadLoading, setReloadLoading] = useState(false);
-  const [unauthenticated, setUnauthenticated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch user role to determine if admin
-        const userResponse = await axios.get('/auth/user');
-        const role = userResponse.data.role;
+        const userResponse = await axios.get('/auth/user', {
+          withCredentials: true // Ensure cookies are sent with the request
+        });
 
-        if (role === 'admin') {
+        if (userResponse.data.role !== 'admin') {
+          navigate('/home');
+        } else {
           fetchDailyScanStatus();
           fetchUsers();
-        } else {
-          navigate('/home');
         }
       } catch (error) {
         console.error('Error:', error);
-        setUnauthenticated(true);
+        navigate('/login'); // Redirect to login if there's an error (e.g., user not found)
       } finally {
         setLoading(false);
       }
@@ -43,7 +43,9 @@ const AdminPage = () => {
 
   const fetchDailyScanStatus = async () => {
     try {
-      const response = await axios.get('/rss/check-daily-scan');
+      const response = await axios.get('/rss/check-daily-scan', {
+        withCredentials: true // Ensure cookies are sent with the request
+      });
       setScanStatus(response.data);
     } catch (error) {
       console.error('Error fetching scan status:', error);
@@ -52,7 +54,9 @@ const AdminPage = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get('/admin/users');
+      const response = await axios.get('/admin/users', {
+        withCredentials: true // Ensure cookies are sent with the request
+      });
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -62,7 +66,9 @@ const AdminPage = () => {
   const handleReloadNews = async () => {
     setReloadLoading(true);
     try {
-      await axios.post('/rss/reload');
+      await axios.post('/rss/reload', null, {
+        withCredentials: true // Ensure cookies are sent with the request
+      });
       setScanStatus({ message: 'News for today already reloaded.', scan: null });
     } catch (error) {
       console.error('Error reloading news:', error);
@@ -73,15 +79,13 @@ const AdminPage = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`/admin/user/${userId}`);
+      await axios.delete(`/admin/user/${userId}`, {
+        withCredentials: true // Ensure cookies are sent with the request
+      });
       setUsers(users.filter(user => user._id !== userId));
     } catch (error) {
       console.error('Error deleting user:', error);
     }
-  };
-
-  const handleLoginRedirect = () => {
-    navigate('/login');
   };
 
   if (loading) {
@@ -89,25 +93,6 @@ const AdminPage = () => {
       <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
         <FaSpinner className="animate-spin text-3xl text-gray-700 dark:text-gray-300" />
         <span className="ml-4 text-gray-700 dark:text-gray-300">Loading...</span>
-      </div>
-    );
-  }
-
-  if (unauthenticated) {
-    return (
-      <div className="flex flex-col min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900 p-6">
-        <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100 text-center">
-          You are not logged in
-        </h1>
-        <p className="mb-4 text-gray-700 dark:text-gray-300 text-center">
-          Please log in to access the admin page.
-        </p>
-        <button
-          onClick={handleLoginRedirect}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
-        >
-          Go to Login Page
-        </button>
       </div>
     );
   }

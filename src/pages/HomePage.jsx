@@ -20,6 +20,12 @@ const HomePage = () => {
           withCredentials: true // Ensure cookies are sent with the request
         });
 
+        if (!userResponse.data || !userResponse.data.role) {
+          // Redirect to login if no user data or role
+          navigate('/login');
+          return;
+        }
+
         const role = userResponse.data.role;
         setIsAdmin(role === 'admin');
 
@@ -34,7 +40,12 @@ const HomePage = () => {
           setNews([]);
         }
       } catch (error) {
-        toast.error('Error verifying token or fetching news: ' + (error.response?.data?.message || error.message));
+        // Handle error and redirect to login if needed
+        if (error.response?.status === 401) { // Unauthorized
+          navigate('/login');
+        } else {
+          toast.error('Error verifying token or fetching news: ' + (error.response?.data?.message || error.message));
+        }
       } finally {
         setLoading(false);
       }

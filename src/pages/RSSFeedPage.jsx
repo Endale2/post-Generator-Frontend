@@ -21,7 +21,7 @@ const RSSFeedPage = () => {
         await fetchRSSFeeds();
       } catch (error) {
         console.error('Error verifying token or fetching RSS feeds:', error);
-        toast.error('Error verifying token or fetching RSS feeds.');
+        toast.error(error.response?.data?.message || 'Error verifying token or fetching RSS feeds.');
         navigate('/login'); // Redirect to login if authentication fails
       }
     };
@@ -38,7 +38,7 @@ const RSSFeedPage = () => {
         }
       } catch (error) {
         console.error('Error fetching RSS feeds:', error);
-        toast.error('Error fetching RSS feeds.');
+        toast.error(error.response?.data?.message || 'Error fetching RSS feeds.');
       } finally {
         setLoading(false);
       }
@@ -56,7 +56,7 @@ const RSSFeedPage = () => {
       toast.success('RSS feed added successfully.');
     } catch (error) {
       console.error('Error adding RSS feed:', error);
-      toast.error('Error adding RSS feed.');
+      toast.error(error.response?.data?.message || 'Error adding RSS feed.');
     }
   };
 
@@ -67,7 +67,7 @@ const RSSFeedPage = () => {
       toast.success('RSS feed deleted successfully.');
     } catch (error) {
       console.error('Error deleting RSS feed:', error);
-      toast.error('Error deleting RSS feed.');
+      toast.error(error.response?.data?.message || 'Error deleting RSS feed.');
     }
   };
 
