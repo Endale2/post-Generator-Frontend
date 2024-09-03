@@ -1,24 +1,17 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import axios from '../axiosConfig';
 import { FaSignOutAlt, FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 const LogoutButton = () => {
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     setLoading(true);
     try {
-      
       // Remove token from local storage
       localStorage.removeItem('accessToken');
-
-      // Clear user data from Redux store
-      dispatch(logout());
 
       // Redirect to login page after logout
       navigate('/login');
