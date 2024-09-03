@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux'; // Import useSelector for accessing Redux state
-import axios from '../axiosConfig';
+import axios from '../axiosConfig'; // Import Axios configuration
 import { useNavigate } from 'react-router-dom';
 import { FaTrash, FaSpinner, FaRedo } from 'react-icons/fa';
 
@@ -11,11 +10,14 @@ const AdminPage = () => {
   const [reloadLoading, setReloadLoading] = useState(false);
   const [unauthenticated, setUnauthenticated] = useState(false);
   const navigate = useNavigate();
-  const { role } = useSelector((state) => state.user); // Get role from Redux store
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch user role to determine if admin
+        const userResponse = await axios.get('/auth/user');
+        const role = userResponse.data.role;
+
         if (role === 'admin') {
           fetchDailyScanStatus();
           fetchUsers();
@@ -37,7 +39,7 @@ const AdminPage = () => {
       setUsers([]);
       setScanStatus(null);
     };
-  }, [role, navigate]);
+  }, [navigate]);
 
   const fetchDailyScanStatus = async () => {
     try {

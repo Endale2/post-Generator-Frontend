@@ -1,39 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'; // Import useDispatch and useSelector
 import { FaCheckCircle, FaTimesCircle, FaTrashAlt, FaSpinner } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import axios from '../axiosConfig';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { fetchUser } from '../features/userSlice'; // Import fetchUser
 
 const RSSFeedPage = () => {
   const [rssFeeds, setRssFeeds] = useState([]);
   const [newFeedUrl, setNewFeedUrl] = useState('');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // Initialize useDispatch
-  const user = useSelector((state) => state.user); // Access user state
 
   useEffect(() => {
     const checkAuthAndFetchFeeds = async () => {
       try {
-        // Fetch user data from Redux
-        await dispatch(fetchUser()).unwrap();
+        // Fetch user data to check authentication
+        await axios.get('/auth/user');
         
         // Fetch RSS feeds
         fetchRSSFeeds();
       } catch (error) {
         console.error('Error verifying token or fetching RSS feeds:', error);
         toast.error('Error verifying token or fetching RSS feeds.');
+        navigate('/login'); // Redirect to login if authentication fails
       }
     };
 
     const fetchRSSFeeds = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('/rss', {
-          withCredentials: true
-        });
+        const response = await axios.get('/rss');
         if (Array.isArray(response.data)) {
           setRssFeeds(response.data);
         } else {
@@ -48,14 +44,12 @@ const RSSFeedPage = () => {
     };
 
     checkAuthAndFetchFeeds();
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
   const handleAddFeed = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/rss/add', { url: newFeedUrl }, {
-        withCredentials: true
-      });
+      const response = await axios.post('/rss/add', { url: newFeedUrl });
       setRssFeeds([...rssFeeds, response.data.feed]);
       setNewFeedUrl('');
       toast.success('RSS feed added successfully.');
@@ -67,9 +61,7 @@ const RSSFeedPage = () => {
 
   const handleDeleteFeed = async (id) => {
     try {
-      await axios.delete(`/rss/${id}`, {
-        withCredentials: true
-      });
+      await axios.delete(`/rss/${id}`);
       setRssFeeds(rssFeeds.filter(feed => feed._id !== id));
       toast.success('RSS feed deleted successfully.');
     } catch (error) {

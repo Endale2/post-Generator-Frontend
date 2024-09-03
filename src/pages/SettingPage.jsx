@@ -1,39 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'; // Import useDispatch and useSelector
 import { FaCog, FaSave, FaSpinner } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import axios from '../axiosConfig'; // Import Axios configuration
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { fetchUser } from '../features/userSlice'; // Import fetchUser
 
 const SettingsPage = () => {
   const [context, setContext] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // Initialize useDispatch
-  const user = useSelector((state) => state.user); // Access user state
 
   useEffect(() => {
     const checkAuthAndFetchSetting = async () => {
       try {
-        // Fetch user data from Redux
-        await dispatch(fetchUser()).unwrap();
+        // Fetch user data to verify authentication
+        await axios.get('/auth/user');
         
         // Fetch settings
         fetchSetting();
       } catch (error) {
         console.error('Error verifying token or fetching setting:', error);
         toast.error('Error verifying token or fetching setting.');
-        navigate('/login');
+        navigate('/login'); // Redirect to login if authentication fails
       }
     };
 
     const fetchSetting = async () => {
       try {
-        const response = await axios.get('/setting', {
-          withCredentials: true
-        });
+        const response = await axios.get('/setting');
         if (response.data && response.data.context) {
           setContext(response.data.context);
         } else {
@@ -48,14 +43,12 @@ const SettingsPage = () => {
     };
 
     checkAuthAndFetchSetting();
-  }, [dispatch, navigate]);
+  }, [navigate]);
 
   const handleUpdateSetting = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/setting/update', { context }, {
-        withCredentials: true
-      });
+      await axios.post('/setting/update', { context });
       setMessage('Setting updated successfully!');
       toast.success('Setting updated successfully.');
     } catch (error) {
@@ -69,7 +62,7 @@ const SettingsPage = () => {
     <div className="min-h-screen bg-gradient-to-b from-blue-100 to-blue-200 dark:from-gray-800 dark:to-gray-900 p-6 flex flex-col items-center justify-center">
       <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 max-w-md w-full">
         <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100 flex items-center justify-center">
-          <FaCog className="mr-2 text-blue-500 dark:text-blue-300 animate-spin" />
+          <FaCog className="mr-2 text-blue-500 dark:text-blue-300" />
           Settings Page
         </h1>
 
