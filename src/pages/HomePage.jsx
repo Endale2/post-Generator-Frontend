@@ -49,8 +49,8 @@ const HomePage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center flex-1 min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
-      <div className="w-full max-w-3xl">
-        <h2 className="text-center text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+      <div className="w-full max-w-5xl">
+        <h2 className="text-center text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">
           Today's Top 3 Posts
         </h2>
 
@@ -59,7 +59,7 @@ const HomePage = () => {
             <FaSpinner className="animate-spin text-4xl text-gray-600 dark:text-gray-400" />
           </div>
         ) : news.length > 0 ? (
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {news.map((item) => (
               <NewsCard
                 key={item._id}
