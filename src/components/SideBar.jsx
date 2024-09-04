@@ -55,7 +55,6 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           <FaRss size={22} />
           <span className="text-lg font-medium">RSS Feed</span>
         </Link>
-
         {role === 'admin' && (
           <Link to="/admin" className={getLinkClass('/admin')}>
             <FaUserShield size={22} />
