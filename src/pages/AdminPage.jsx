@@ -2,20 +2,22 @@ import React, { useState, useEffect } from 'react';
 import axios from '../axiosConfig'; // Import Axios configuration
 import { useNavigate } from 'react-router-dom';
 import { FaTrash, FaSpinner, FaRedo } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 const AdminPage = () => {
   const [loading, setLoading] = useState(true);
   const [scanStatus, setScanStatus] = useState(null);
   const [users, setUsers] = useState([]);
   const [reloadLoading, setReloadLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch user role to determine if admin
         const userResponse = await axios.get('/auth/user', {
-          withCredentials: true // Ensure cookies are sent with the request
+          withCredentials: true
         });
 
         if (userResponse.data.role !== 'admin') {
@@ -26,7 +28,7 @@ const AdminPage = () => {
         }
       } catch (error) {
         console.error('Error:', error);
-        navigate('/login'); // Redirect to login if there's an error (e.g., user not found)
+        navigate('/login');
       } finally {
         setLoading(false);
       }
@@ -44,7 +46,7 @@ const AdminPage = () => {
   const fetchDailyScanStatus = async () => {
     try {
       const response = await axios.get('/rss/check-daily-scan', {
-        withCredentials: true // Ensure cookies are sent with the request
+        withCredentials: true
       });
       setScanStatus(response.data);
     } catch (error) {
@@ -55,7 +57,7 @@ const AdminPage = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get('/admin/users', {
-        withCredentials: true // Ensure cookies are sent with the request
+        withCredentials: true
       });
       setUsers(response.data);
     } catch (error) {
@@ -66,26 +68,45 @@ const AdminPage = () => {
   const handleReloadNews = async () => {
     setReloadLoading(true);
     try {
-      await axios.post('/rss/reload', null, {
-        withCredentials: true // Ensure cookies are sent with the request
+      await axios.delete('/rss/delete-daily-scan', {
+        withCredentials: true
       });
+
+      await axios.post('/rss/reload', null, {
+        withCredentials: true
+      });
+
+      toast.success('News reloaded successfully!');
       setScanStatus({ message: 'News for today already reloaded.', scan: null });
     } catch (error) {
       console.error('Error reloading news:', error);
+      toast.error('Failed to reload news.');
     } finally {
       setReloadLoading(false);
     }
   };
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteUser = async () => {
+    if (!userToDelete) return;
+
     try {
-      await axios.delete(`/admin/user/${userId}`, {
-        withCredentials: true // Ensure cookies are sent with the request
+      await axios.delete(`/admin/user/${userToDelete._id}`, {
+        withCredentials: true
       });
-      setUsers(users.filter(user => user._id !== userId));
+      setUsers(users.filter(user => user._id !== userToDelete._id));
+      toast.success('User deleted successfully!');
     } catch (error) {
       console.error('Error deleting user:', error);
+      toast.error('Failed to delete user.');
+    } finally {
+      setShowDeleteModal(false);
+      setUserToDelete(null);
     }
+  };
+
+  const confirmDeleteUser = (user) => {
+    setUserToDelete(user);
+    setShowDeleteModal(true);
   };
 
   if (loading) {
@@ -150,7 +171,7 @@ const AdminPage = () => {
                       <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{user.role}</td>
                       <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
                         <button
-                          onClick={() => handleDeleteUser(user._id)}
+                          onClick={() => confirmDeleteUser(user)}
                           className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-600 transition-colors"
                         >
                           <FaTrash />
@@ -164,6 +185,29 @@ const AdminPage = () => {
           </div>
         </div>
       </main>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h4 className="text-lg font-bold mb-4">Confirm Delete</h4>
+            <p className="mb-6">Are you sure you want to delete {userToDelete.name}?</p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 px-4 py-2 rounded hover:bg-gray-400 dark:hover:bg-gray-600 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteUser}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
