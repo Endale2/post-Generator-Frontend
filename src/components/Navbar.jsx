@@ -42,8 +42,10 @@ const Navbar = ({ toggleSidebar }) => {
 
       {/* Avatar Information */}
       {!loading && (
-        <div className="flex items-center justify-center w-10 h-10 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-full">
-          {displayName[0].toUpperCase()}
+        <div className="flex items-center">
+          <div className="w-10 h-10 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-full flex items-center justify-center">
+            {displayName[0].toUpperCase()}
+          </div>
         </div>
       )}
     </nav>

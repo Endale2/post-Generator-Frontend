@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaSpinner, FaRedo } from 'react-icons/fa';
 import axios from '../axiosConfig';
 import { toast } from 'react-toastify';
-import NewsCard from '../components/NewsCard';  // Assuming you have this component for individual news cards
+import NewsCard from '../components/NewsCard';
 
 const HomePage = () => {
   const [news, setNews] = useState([]);
@@ -24,11 +24,7 @@ const HomePage = () => {
         setIsAdmin(role === 'admin');
 
         const newsResponse = await axios.get('/posts', { withCredentials: true });
-        if (newsResponse.data.length > 0) {
-          setNews(newsResponse.data[0].posts.slice(0, 3));
-        } else {
-          setNews([]);
-        }
+        setNews(newsResponse.data.length > 0 ? newsResponse.data[0].posts.slice(0, 3) : []);
       } catch (error) {
         if (error.response?.status === 401) {
           navigate('/login');

@@ -54,15 +54,14 @@ const NewsCard = ({ title, description, link }) => {
         console.error('Failed to copy text: ', error);
       });
   };
-  
 
   const readMoreLink = formattedDescription.match(/Read more: (https?:\/\/[^\s]+)/);
   const readMoreUrl = readMoreLink ? readMoreLink[1] : link;
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-md rounded-md overflow-hidden mx-auto my-6 max-w-md md:max-w-2xl lg:max-w-3xl">
-      <div className="p-6 space-y-4">
-        <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+    <div className="bg-white dark:bg-gray-800 shadow-md rounded-md overflow-hidden mx-auto my-6 max-w-md sm:max-w-2xl lg:max-w-3xl">
+      <div className="p-4 sm:p-6 space-y-4">
+        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
         <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{formattedDescription}</p>
         <div className="flex flex-col sm:flex-row sm:gap-4 gap-2">
           <button
