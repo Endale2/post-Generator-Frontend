@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NewsCard from '../components/NewsCard';
-import axios from '../axiosConfig';
 import { FaSpinner, FaRedo } from 'react-icons/fa';
+import axios from '../axiosConfig';
 import { toast } from 'react-toastify';
+import NewsCard from '../components/NewsCard';  // Assuming you have this component for individual news cards
 
 const HomePage = () => {
   const [news, setNews] = useState([]);
@@ -48,8 +48,8 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1 min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
-      <div className="w-full max-w-3xl">
+    <div className="p-4 bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col items-center">
+      <div className="w-full max-w-6xl">
         <h2 className="text-center text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
           Today's Top 3 Posts
         </h2>
@@ -59,7 +59,7 @@ const HomePage = () => {
             <FaSpinner className="animate-spin text-4xl text-gray-600 dark:text-gray-400" />
           </div>
         ) : news.length > 0 ? (
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {news.map((item) => (
               <NewsCard
                 key={item._id}

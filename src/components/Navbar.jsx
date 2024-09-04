@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../axiosConfig';
-import LogoutButton from './LogoutButton';
-import Avatar from './Avatar';
-import { toast } from 'react-toastify';
 import { FaBars } from 'react-icons/fa';
-import { IoMdClose } from 'react-icons/io'; // X Icon
-import MenuBar from './MenuBar';
+import { toast } from 'react-toastify';
 
-const Navbar = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
+const Navbar = ({ toggleSidebar }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,44 +26,27 @@ const Navbar = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
 
   const displayName = user ? user.name || user.email.split('@')[0] : 'User';
 
-  const toggleDrawer = () => {
-    setDrawerOpen(!isDrawerOpen);
-  };
-
   return (
-    <div className="fixed top-0 left-0 right-0 z-30 bg-gray-200 dark:bg-gray-900 shadow-md">
-      <div className="flex items-center justify-between p-4 max-w-screen-xl mx-auto">
-        {/* Toggle Drawer Button for Small Screens */}
-        <button onClick={toggleDrawer} className="lg:hidden p-2 text-gray-800 dark:text-gray-100">
-          <FaBars size={22} />
-        </button>
+    <nav className="bg-white dark:bg-gray-800 dark:text-white p-4 flex justify-between items-center">
+      {/* Hamburger Menu on the Left */}
+      <button
+        onClick={toggleSidebar}
+        className="lg:hidden block p-2 focus:outline-none"
+        aria-label="Toggle sidebar"
+      >
+        <FaBars className="w-6 h-6 text-gray-800 dark:text-white" />
+      </button>
+      
+      {/* Website Title */}
+      <h1 className="text-xl font-bold">My Website</h1>
 
-        <h1 className="text-xl font-bold text-gray-800 dark:text-white">Posts Portal</h1>
-
-        <div className="flex items-center space-x-4">
-          {/* Avatar */}
-          <Avatar name={displayName} className="cursor-pointer" />
-
-          {/* Logout Button */}
-          <LogoutButton />
-        </div>
-      </div>
-
-      {/* Drawer for smaller screens */}
-      {isDrawerOpen && (
-        <div className="fixed inset-0 z-40 bg-gray-900 bg-opacity-75">
-          <div className="fixed inset-y-0 left-0 bg-gray-100 dark:bg-gray-900 p-6 w-64 shadow-lg z-50">
-            {/* Close Drawer Button */}
-            <button onClick={toggleDrawer} className="text-gray-900 dark:text-gray-100 p-2">
-              <IoMdClose size={24} />
-            </button>
-
-            {/* Menu Bar */}
-            <MenuBar />
-          </div>
+      {/* Avatar Information */}
+      {!loading && (
+        <div className="flex items-center justify-center w-10 h-10 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-full">
+          {displayName[0].toUpperCase()}
         </div>
       )}
-    </div>
+    </nav>
   );
 };
 
