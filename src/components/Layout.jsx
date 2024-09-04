@@ -1,24 +1,20 @@
-import React, { useState } from 'react';
+// src/components/Layout.jsx
+import React from 'react';
 import Navbar from './Navbar';
 import SideBar from './SideBar';
 
-const Layout = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-
+const Layout = ({ children, darkMode, toggleDarkMode }) => {
   return (
-    <div className="flex">
+    <div className={`flex ${darkMode ? 'dark' : ''}`}>
       {/* Sidebar */}
-      <SideBar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <SideBar />
 
-      {/* Main Content */}
-      <div className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${isSidebarOpen && 'ml-64 lg:ml-72'} lg:ml-72`}>
+      <div className="flex-1 flex flex-col min-h-screen ml-64 lg:ml-72">
         {/* Navbar */}
-        <Navbar toggleSidebar={toggleSidebar} />
+        <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
-        {/* Main Content with spacing below navbar */}
-        <main className="flex-1 p-4 bg-gray-100 dark:bg-gray-800 mt-16 lg:mt-0">
+        {/* Main Content */}
+        <main className="flex-1 p-4 bg-gray-100 dark:bg-gray-800 mt-16">
           {children}
         </main>
       </div>
