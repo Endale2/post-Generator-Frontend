@@ -80,7 +80,7 @@ const AdminPage = () => {
 
   const handleClearDailyScan = async () => {
     try {
-      await axios.delete('/rss/delete-daily-scan', {
+      await axios.post('/rss/delete-daily-scan', {
         withCredentials: true
       });
       setScanStatus(null); // Update scan status after deletion
