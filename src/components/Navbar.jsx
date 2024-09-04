@@ -5,7 +5,7 @@ import LogoutButton from './LogoutButton';
 import Avatar from './Avatar';
 import { toast } from 'react-toastify';
 
-const Navbar = ({ darkMode, toggleDarkMode, toggleSidebar }) => {
+const Navbar = ({ toggleSidebar }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

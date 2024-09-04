@@ -35,15 +35,15 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
 
   if (loading) {
     return (
-      <div className={`fixed inset-y-0 left-0 z-20 bg-gray-100 dark:bg-gray-900 p-6 w-64 lg:w-72 shadow-lg mt-16 ${isOpen ? 'block' : 'hidden lg:block'}`}>
+      <div className={`fixed inset-y-0 left-0 z-20 bg-gray-100 dark:bg-gray-900 p-6 w-64 lg:w-72 shadow-lg mt-16 transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:relative`}>
         <div className="text-center">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className={`fixed inset-y-0 left-0 z-20 bg-gray-100 dark:bg-gray-900 p-6 w-64 lg:w-72 shadow-lg mt-16 ${isOpen ? 'block' : 'hidden lg:block'} transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-      <button onClick={toggleSidebar} className="lg:hidden p-2 text-gray-800 dark:text-gray-100">
+    <div className={`fixed inset-y-0 left-0 z-20 bg-gray-100 dark:bg-gray-900 p-6 w-64 lg:w-72 shadow-lg mt-16 transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:relative`}>
+      <button onClick={toggleSidebar} className="lg:hidden p-2 text-gray-800 dark:text-gray-100 absolute top-4 right-4">
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
