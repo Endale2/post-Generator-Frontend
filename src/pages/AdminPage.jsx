@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from '../axiosConfig'; // Import Axios configuration
 import { useNavigate } from 'react-router-dom';
 import { FaTrash, FaSpinner, FaRedo } from 'react-icons/fa';
-import { toast } from 'react-toastify';
 
 const AdminPage = () => {
   const [loading, setLoading] = useState(true);
@@ -68,45 +67,38 @@ const AdminPage = () => {
   const handleReloadNews = async () => {
     setReloadLoading(true);
     try {
-      await axios.delete('/rss/delete-daily-scan', {
-        withCredentials: true
-      });
-
       await axios.post('/rss/reload', null, {
         withCredentials: true
       });
-
-      toast.success('News reloaded successfully!');
       setScanStatus({ message: 'News for today already reloaded.', scan: null });
     } catch (error) {
       console.error('Error reloading news:', error);
-      toast.error('Failed to reload news.');
     } finally {
       setReloadLoading(false);
     }
   };
 
-  const handleDeleteUser = async () => {
-    if (!userToDelete) return;
-
+  const handleClearDailyScan = async () => {
     try {
-      await axios.delete(`/admin/user/${userToDelete._id}`, {
+      await axios.delete('/rss/delete-daily-scan', {
         withCredentials: true
       });
-      setUsers(users.filter(user => user._id !== userToDelete._id));
-      toast.success('User deleted successfully!');
+      setScanStatus(null); // Update scan status after deletion
     } catch (error) {
-      console.error('Error deleting user:', error);
-      toast.error('Failed to delete user.');
-    } finally {
-      setShowDeleteModal(false);
-      setUserToDelete(null);
+      console.error('Error clearing daily scan:', error);
     }
   };
 
-  const confirmDeleteUser = (user) => {
-    setUserToDelete(user);
-    setShowDeleteModal(true);
+  const handleDeleteUser = async () => {
+    try {
+      await axios.delete(`/admin/user/${userToDelete}`, {
+        withCredentials: true
+      });
+      setUsers(users.filter(user => user._id !== userToDelete));
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   };
 
   if (loading) {
@@ -148,6 +140,12 @@ const AdminPage = () => {
               <div className="p-4 bg-green-100 text-green-700 rounded mb-2">
                 News for today already reloaded
               </div>
+              <button
+                onClick={handleClearDailyScan}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center mx-auto mt-4"
+              >
+                Clear Today's Scan Record
+              </button>
             </div>
           ) : null}
 
@@ -171,7 +169,10 @@ const AdminPage = () => {
                       <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{user.role}</td>
                       <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
                         <button
-                          onClick={() => confirmDeleteUser(user)}
+                          onClick={() => {
+                            setUserToDelete(user._id);
+                            setShowDeleteModal(true);
+                          }}
                           className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-600 transition-colors"
                         >
                           <FaTrash />
@@ -187,20 +188,24 @@ const AdminPage = () => {
       </main>
 
       {showDeleteModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full">
-            <h4 className="text-lg font-bold mb-4">Confirm Delete</h4>
-            <p className="mb-6">Are you sure you want to delete {userToDelete.name}?</p>
-            <div className="flex justify-end space-x-4">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+          <div className="bg-white dark:bg-gray-700 rounded-lg p-6 shadow-lg">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              Confirm Deletion
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300 mt-4">
+              Are you sure you want to delete this user? This action cannot be undone.
+            </p>
+            <div className="mt-6 flex justify-end">
               <button
                 onClick={() => setShowDeleteModal(false)}
-                className="bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 px-4 py-2 rounded hover:bg-gray-400 dark:hover:bg-gray-600 transition-colors"
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg mr-2 hover:bg-gray-600 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteUser}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors"
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
               >
                 Delete
               </button>
