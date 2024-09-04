@@ -63,7 +63,7 @@ const NewsCard = ({ title, description, link }) => {
       <div className="p-4 sm:p-6 space-y-4">
         <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
         <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{formattedDescription}</p>
-        <div className="flex flex-col sm:flex-row sm:gap-4 gap-2">
+        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
           <button
             onClick={handleCopy}
             className="flex items-center justify-center bg-blue-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-700 transition-colors duration-300"

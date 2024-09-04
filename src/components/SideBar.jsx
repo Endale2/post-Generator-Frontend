@@ -13,8 +13,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
       try {
         const response = await axios.get('/auth/user');
         setRole(response.data.role);
-      } catch (error)
-      {
+      } catch (error) {
         console.error('Error fetching user role:', error);
       } finally {
         setLoading(false);
@@ -50,9 +49,9 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
       <aside
         className={`fixed lg:static inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-4 transition-transform transform ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 lg:flex lg:flex-col lg:items-start`}
+        } lg:translate-x-0 flex flex-col space-y-6`}
       >
-        <ul className="w-full space-y-6 mt-10 lg:space-y-4 lg:mt-0 lg:flex lg:flex-col lg:items-start">
+        <ul className="flex flex-col space-y-6 lg:space-y-4">
           <Link to="/home" className={getLinkClass('/home')} onClick={toggleSidebar}>
             <FaHome className="w-6 h-6" />
             <span className="hidden lg:inline">Home</span>
@@ -73,7 +72,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
           </Link>
           <Link to="/logout" className={getLinkClass('/logout')} onClick={toggleSidebar}>
             <FaSignOutAlt className="w-6 h-6" />
-            <span className="hidden lg:inline">Logout</span>
+            <span className="hidden bg-red lg:inline">Logout</span>
           </Link>
         </ul>
       </aside>
