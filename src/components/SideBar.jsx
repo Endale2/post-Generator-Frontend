@@ -1,9 +1,10 @@
+
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from '../axiosConfig';
 import { FaHome, FaRss, FaCog, FaUserShield } from 'react-icons/fa';
 
-const SideBar = () => {
+const SideBar = ({ isOpen, toggleSidebar }) => {
   const [role, setRole] = useState('');
   const [loading, setLoading] = useState(true);
   const location = useLocation();
@@ -34,17 +35,19 @@ const SideBar = () => {
 
   if (loading) {
     return (
-      <div className="fixed inset-y-0 left-0 z-20 bg-gray-100 dark:bg-gray-900 p-6 w-64 lg:w-72 shadow-lg mt-16">
-        <div className="flex flex-col mt-6 space-y-4">
-          {/* Loading indicator */}
-          <div className="text-center">Loading...</div>
-        </div>
+      <div className={`fixed inset-y-0 left-0 z-20 bg-gray-100 dark:bg-gray-900 p-6 w-64 lg:w-72 shadow-lg mt-16 ${isOpen ? 'block' : 'hidden lg:block'}`}>
+        <div className="text-center">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="fixed inset-y-0 left-0 z-20 bg-gray-100 dark:bg-gray-900 p-6 w-64 lg:w-72 shadow-lg mt-16">
+    <div className={`fixed inset-y-0 left-0 z-20 bg-gray-100 dark:bg-gray-900 p-6 w-64 lg:w-72 shadow-lg mt-16 ${isOpen ? 'block' : 'hidden lg:block'}`}>
+      <button onClick={toggleSidebar} className="lg:hidden p-2 text-gray-800 dark:text-gray-100">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
       <div className="flex flex-col mt-6 space-y-4">
         <Link to="/home" className={getLinkClass('/home')}>
           <FaHome size={22} />
