@@ -12,7 +12,6 @@ const Navbar = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const [isModalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -36,10 +35,6 @@ const Navbar = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
     setDrawerOpen(!isDrawerOpen);
   };
 
-  const toggleModal = () => {
-    setModalOpen(!isModalOpen);
-  };
-
   return (
     <div className="fixed top-0 left-0 right-0 z-30 bg-gray-200 dark:bg-gray-900 shadow-md">
       <div className="flex items-center justify-between p-4 max-w-screen-xl mx-auto">
@@ -50,30 +45,12 @@ const Navbar = ({ toggleSidebar, darkMode, toggleDarkMode }) => {
 
         <h1 className="text-xl font-bold text-gray-800 dark:text-white">Posts Portal</h1>
 
-        <div className="relative flex items-center">
-          {/* Avatar with Modal */}
-          <Avatar name={displayName} onClick={toggleModal} className="cursor-pointer" />
+        <div className="flex items-center space-x-4">
+          {/* Avatar */}
+          <Avatar name={displayName} className="cursor-pointer" />
 
-          {/* Modal */}
-          {isModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="absolute inset-0 bg-black opacity-50" onClick={toggleModal}></div>
-              <div className="relative w-72 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-                <div className="p-4 text-center">
-                  <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                    {displayName}
-                  </h2>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {user?.email}
-                  </p>
-                </div>
-                <div className="border-t border-gray-200 dark:border-gray-700"></div>
-                <div className="p-4 text-center">
-                  <LogoutButton />
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Logout Button */}
+          <LogoutButton />
         </div>
       </div>
 

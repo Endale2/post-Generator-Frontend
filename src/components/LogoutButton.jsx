@@ -28,11 +28,11 @@ const LogoutButton = () => {
   return (
     <button
       onClick={handleLogout}
-      className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 flex items-center justify-center"
+      className="text-red-500 hover:text-red-600 p-2 rounded-full flex items-center justify-center"
       disabled={loading}
+      aria-label="Logout"
     >
-      {loading ? <FaSpinner className="animate-spin mr-2" /> : <FaSignOutAlt className="mr-2" />}
-      Logout
+      {loading ? <FaSpinner className="animate-spin" size={20} /> : <FaSignOutAlt size={20} />}
     </button>
   );
 };
