@@ -38,7 +38,7 @@ const Navbar = ({ toggleSidebar }) => {
       </button>
       
       {/* Website Title */}
-      <h1 className="text-xl font-bold">My Website</h1>
+      <h1 className="text-xl font-bold">Posts Portal</h1>
 
       {/* Avatar Information */}
       {!loading && (
