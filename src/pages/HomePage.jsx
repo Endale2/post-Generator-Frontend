@@ -48,7 +48,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center flex-1 min-h-screen p-4 bg-gray-100 dark:bg-gray-900">
+    <div className="flex flex-col items-center justify-center flex-1 min-h-screen  bg-gray-100 dark:bg-gray-900">
       <div className="w-full max-w-5xl">
         <h2 className="text-center text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">
           Today's Top 3 Posts
