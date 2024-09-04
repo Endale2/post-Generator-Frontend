@@ -78,7 +78,7 @@ const RSSFeedPage = () => {
 
   return (
     <div className="container mx-auto p-4 dark:bg-gray-900 dark:text-white min-h-screen">
-      <h1 className="text-4xl font-extrabold mb-8 text-center">RSS Feed Manager</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center">RSS Feed Manager</h1>
 
       <form onSubmit={handleAddFeed} className="mb-8 flex flex-col items-center w-full">
         <input

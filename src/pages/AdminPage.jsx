@@ -99,9 +99,9 @@ const AdminPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <main className="flex-1 p-6 bg-gray-100 dark:bg-gray-900">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100 text-center">
+      <main className="flex-1 p-4 sm:p-6 bg-gray-100 dark:bg-gray-900">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100 text-center">
             Admin Dashboard
           </h2>
 
@@ -109,7 +109,7 @@ const AdminPage = () => {
             <div className="mb-6 text-center">
               <button
                 onClick={handleReloadNews}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors flex items-center justify-center mx-auto"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center mx-auto"
                 disabled={reloadLoading}
               >
                 {reloadLoading ? (
@@ -131,24 +131,24 @@ const AdminPage = () => {
           ) : null}
 
           <div className="mt-10">
-            <h3 className="text-2xl font-semibold mb-4">Users</h3>
+            <h3 className="text-xl sm:text-2xl font-semibold mb-4">Users</h3>
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
-                <thead>
-                  <tr className="bg-gray-100 dark:bg-gray-700 border-b dark:border-gray-600">
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                <thead className="bg-gray-100 dark:bg-gray-700">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {users.map(user => (
                     <tr key={user._id} className="border-b dark:border-gray-600">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{user.name}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{user.email}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{user.role}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                      <td className="px-4 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">{user.name}</td>
+                      <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{user.email}</td>
+                      <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">{user.role}</td>
+                      <td className="px-4 py-4 text-sm text-gray-500 dark:text-gray-300">
                         <button
                           onClick={() => handleDeleteUser(user._id)}
                           className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-600 transition-colors"
