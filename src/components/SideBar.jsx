@@ -40,7 +40,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
   }
 
   return (
-    <div>
+    <div className="fixed inset-0 z-30 lg:static lg:inset-y-0 lg:z-auto">
       {/* Overlay for mobile drawer */}
       {isOpen && (
         <div
@@ -51,9 +51,9 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
       <aside
         className={`fixed lg:static inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-4 transition-transform transform ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 flex flex-col justify-center items-center space-y-8`}
+        } lg:translate-x-0 flex flex-col justify-between items-center space-y-8 h-full`}
       >
-        <ul className="w-full space-y-6 mt-10">
+        <ul className="w-full space-y-6">
           <Link to="/home" className={getLinkClass('/home')} onClick={toggleSidebar}>
             <FaHome className="w-6 h-6" />
             <span>Home</span>
@@ -72,11 +72,13 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
             <FaCog className="w-6 h-6" />
             <span>Settings</span>
           </Link>
+        </ul>
+        <div className="w-full">
           <Link to="/logout" className={getLinkClass('/logout')} onClick={toggleSidebar}>
             <FaSignOutAlt className="w-6 h-6" />
             <span>Logout</span>
           </Link>
-        </ul>
+        </div>
       </aside>
     </div>
   );
