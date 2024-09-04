@@ -59,24 +59,26 @@ const NewsCard = ({ title, description, link }) => {
   const readMoreUrl = readMoreLink ? readMoreLink[1] : link;
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-md rounded-md overflow-hidden mx-auto my-6 max-w-md sm:max-w-2xl lg:max-w-3xl">
-      <div className="p-4 sm:p-6 space-y-4">
-        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
-        <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{formattedDescription}</p>
-        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+    <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden mx-4 my-4 max-w-xs sm:max-w-md md:max-w-lg">
+      <div className="p-3 sm:p-4 space-y-3">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+        <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 whitespace-pre-line">
+          {formattedDescription}
+        </p>
+        <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0">
           <button
             onClick={handleCopy}
-            className="flex items-center justify-center bg-blue-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-700 transition-colors duration-300"
+            className="flex items-center justify-center bg-blue-600 text-white py-2 px-3 rounded-md shadow-md hover:bg-blue-700 transition-colors duration-300 text-sm sm:text-base"
           >
-            <FaCopy className="mr-2" /> {copyText}
+            <FaCopy className="mr-1 sm:mr-2" /> {copyText}
           </button>
           <a
             href={readMoreUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center bg-blue-600 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-700 transition-colors duration-300"
+            className="flex items-center justify-center bg-blue-600 text-white py-2 px-3 rounded-md shadow-md hover:bg-blue-700 transition-colors duration-300 text-sm sm:text-base"
           >
-            <FaExternalLinkAlt className="mr-2" /> Read More
+            <FaExternalLinkAlt className="mr-1 sm:mr-2" /> Read More
           </a>
         </div>
       </div>

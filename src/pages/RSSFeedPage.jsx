@@ -10,6 +10,8 @@ const RSSFeedPage = () => {
   const [newFeedUrl, setNewFeedUrl] = useState('');
   const [loading, setLoading] = useState(true);
   const [addingFeed, setAddingFeed] = useState(false);
+  const [feedToDelete, setFeedToDelete] = useState(null); // State for the feed to be deleted
+  const [showModal, setShowModal] = useState(false); // State to show/hide modal
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,15 +64,28 @@ const RSSFeedPage = () => {
     }
   };
 
-  const handleDeleteFeed = async (id) => {
+  const handleDeleteFeed = async () => {
     try {
-      await axios.delete(`/rss/${id}`);
-      setRssFeeds(rssFeeds.filter(feed => feed._id !== id));
+      await axios.delete(`/rss/${feedToDelete}`);
+      setRssFeeds(rssFeeds.filter(feed => feed._id !== feedToDelete));
       toast.success('RSS feed deleted successfully.');
     } catch (error) {
       console.error('Error deleting RSS feed:', error);
       toast.error(error.response?.data?.message || 'Error deleting RSS feed.');
+    } finally {
+      setShowModal(false);
+      setFeedToDelete(null);
     }
+  };
+
+  const openDeleteModal = (id) => {
+    setFeedToDelete(id);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setFeedToDelete(null);
   };
 
   return (
@@ -88,8 +103,7 @@ const RSSFeedPage = () => {
         />
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors dark:bg-blue-500 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus
-          focus:ring-blue-500 flex items-center justify-center"
+          className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors dark:bg-blue-500 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center"
           disabled={addingFeed}
         >
           {addingFeed ? (
@@ -118,7 +132,7 @@ const RSSFeedPage = () => {
                   )}
                 </div>
                 <button
-                  onClick={() => handleDeleteFeed(feed._id)}
+                  onClick={() => openDeleteModal(feed._id)}
                   className="mt-2 sm:mt-0 text-red-600 hover:text-red-800 transition-colors dark:text-red-400 dark:hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                   <FaTrashAlt className="text-xl" />
@@ -129,6 +143,29 @@ const RSSFeedPage = () => {
             <p className="text-center text-lg">No RSS feeds available.</p>
           )}
         </ul>
+      )}
+
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-md shadow-lg dark:bg-gray-800">
+            <h2 className="text-xl font-semibold mb-4">Confirm Delete</h2>
+            <p className="mb-6">Are you sure you want to delete this RSS feed?</p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={handleDeleteFeed}
+                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors dark:bg-red-500 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              >
+                Delete
+              </button>
+              <button
+                onClick={closeModal}
+                className="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400 transition-colors dark:bg-gray-600 dark:text-white dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
