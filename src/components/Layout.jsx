@@ -3,8 +3,7 @@ import SideBar from './SideBar';
 import Footer from './Footer';
 import { useState } from 'react';
 
-
-function Layout({children}) {
+function Layout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -13,12 +12,20 @@ function Layout({children}) {
 
   return (
     <div className="flex min-h-screen">
+      {/* Sidebar */}
       <SideBar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className="flex flex-col flex-grow">
+
+      {/* Main content area */}
+      <div className="flex flex-col flex-grow lg:ml-64"> {/* Add left margin on large screens to account for the sidebar */}
+        {/* Navbar */}
         <Navbar toggleSidebar={toggleSidebar} />
-        <main className="flex-grow">
+
+        {/* Main content */}
+        <main className="flex-grow p-4 overflow-auto">
           {children}
         </main>
+
+        {/* Footer */}
         <Footer />
       </div>
     </div>
