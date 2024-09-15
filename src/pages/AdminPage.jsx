@@ -84,6 +84,7 @@ const AdminPage = () => {
         withCredentials: true
       });
       setScanStatus(null); // Update scan status after deletion
+      window.location.reload(); // Refresh the page after successful deletion
     } catch (error) {
       console.error('Error clearing daily scan:', error);
     }
@@ -151,6 +152,7 @@ const AdminPage = () => {
 
           <div className="mt-10">
             <h3 className="text-xl sm:text-2xl font-semibold mb-4">Users</h3>
+            {/* Wrap the table with a div to enable horizontal scrolling */}
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
                 <thead className="bg-gray-100 dark:bg-gray-700">
