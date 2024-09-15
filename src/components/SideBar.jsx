@@ -49,9 +49,8 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
         ></div>
       )}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-4 transition-transform transform ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 flex flex-col justify-center items-center space-y-8`}
+        className={`lg:fixed lg:inset-y-0 lg:left-0 w-64 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-4 transition-transform transform 
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 flex flex-col justify-center items-center space-y-8`}
       >
         <ul className="w-full space-y-6 mt-10">
           <Link to="/home" className={getLinkClass('/home')} onClick={toggleSidebar}>
