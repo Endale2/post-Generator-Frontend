@@ -44,49 +44,57 @@ const HomePage = () => {
   };
 
   return (
-    <div className="p-4 bg-gray-100 dark:bg-gray-900 min-h-screen flex flex-col items-center">
-      <div className="w-full max-w-6xl">
-        <h2 className="text-center text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-          Today's Top 3 Posts
-        </h2>
+    <div className="min-h-screen flex flex-col justify-between">
+      {/* Main Content Section */}
+      <div className="flex-grow bg-gray-100 dark:bg-gray-900 p-4">
+        <div className="w-full max-w-6xl mx-auto">
+          <h2 className="text-center text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+            Today's Top 3 Posts
+          </h2>
 
-        {loading ? (
-          <div className="flex justify-center items-center min-h-[300px]">
-            <FaSpinner className="animate-spin text-4xl text-gray-600 dark:text-gray-400" />
-          </div>
-        ) : news.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {news.map((item) => (
-              <NewsCard
-                key={item._id}
-                title={item.title}
-                description={item.content}
-                link={item.link}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center">
-            <p className="text-lg text-gray-700 dark:text-gray-300">
-              No posts for today.
-            </p>
-            {isAdmin && (
-              <>
-                <p className="text-gray-700 dark:text-gray-300 mt-4">
-                  Please reload posts in the admin section.
-                </p>
-                <button
-                  onClick={handleReloadNews}
-                  className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors flex items-center justify-center mx-auto"
-                >
-                  <FaRedo className="mr-2" />
-                  Go to Admin
-                </button>
-              </>
-            )}
-          </div>
-        )}
+          {loading ? (
+            <div className="flex justify-center items-center min-h-[300px]">
+              <FaSpinner className="animate-spin text-4xl text-gray-600 dark:text-gray-400" />
+            </div>
+          ) : news.length > 0 ? (
+            <div className="flex flex-col space-y-4">
+              {news.map((item) => (
+                <NewsCard
+                  key={item._id}
+                  title={item.title}
+                  description={item.content}
+                  link={item.link}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center">
+              <p className="text-lg text-gray-700 dark:text-gray-300">
+                No posts for today.
+              </p>
+              {isAdmin && (
+                <>
+                  <p className="text-gray-700 dark:text-gray-300 mt-4">
+                    Please reload posts in the admin section.
+                  </p>
+                  <button
+                    onClick={handleReloadNews}
+                    className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors flex items-center justify-center mx-auto"
+                  >
+                    <FaRedo className="mr-2" />
+                    Go to Admin
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Footer Section */}
+      <footer className="bg-gray-200 dark:bg-gray-800 p-4 text-center text-gray-700 dark:text-gray-300">
+        Footer Content Goes Here
+      </footer>
     </div>
   );
 };
