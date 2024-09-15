@@ -33,7 +33,7 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
 
   if (loading) {
     return (
-      <div className="fixed inset-y-0 left-0 z-20 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-4 w-64 lg:w-72 shadow-lg mt-16 flex items-center justify-center">
+      <div className="fixed inset-y-0 left-0 z-20 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-4 w-64 lg:w-72 shadow-lg flex items-center justify-center">
         <div className="text-center">Loading...</div>
       </div>
     );
@@ -49,8 +49,10 @@ const SideBar = ({ isOpen, toggleSidebar }) => {
         ></div>
       )}
       <aside
-        className={`lg:fixed lg:inset-y-0 lg:left-0 w-64 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-4 transition-transform transform 
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 flex flex-col justify-center items-center space-y-8`}
+        className={`fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-4 transition-transform transform ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        } lg:translate-x-0 flex flex-col justify-between h-full overflow-hidden`}
+        style={{ height: '100vh' }} // Ensure sidebar is full height
       >
         <ul className="w-full space-y-6 mt-10">
           <Link to="/home" className={getLinkClass('/home')} onClick={toggleSidebar}>
