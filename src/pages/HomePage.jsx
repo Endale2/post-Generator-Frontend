@@ -4,7 +4,7 @@ import { FaSpinner, FaRedo } from 'react-icons/fa';
 import axios from '../axiosConfig';
 import { toast } from 'react-toastify';
 import NewsCard from '../components/NewsCard';
-import Layout from './Layout'; // Import the Layout component
+import Layout from '../components/Layout'; // Import the Layout component
 
 const HomePage = () => {
   const [news, setNews] = useState([]);
